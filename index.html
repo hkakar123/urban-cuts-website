@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Urban Cuts - Look sharp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-alt: #0b1020;
+      --card: rgba(15, 23, 42, 0.85);
+      --primary: #f97316;
+      --primary-soft: rgba(249, 115, 22, 0.2);
+      --accent: #38bdf8;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --radius-xl: 1.5rem;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.8);
+      --blur: 22px;
+      --transition-fast: 200ms ease;
+      --transition-med: 300ms ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top, #1f2937 0, #020617 55%);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    .wrapper {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem 4rem;
+    }
+
+    section {
+      padding: 6rem 0 4rem;
+      scroll-margin-top: 88px;
+    }
+
+    h2.section-title {
+      font-size: clamp(2.1rem, 3vw, 2.6rem);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-subtitle {
+      color: var(--muted);
+      margin-bottom: 3rem;
+      max-width: 520px;
+    }
+
+    /* ===== NAVBAR ===== */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(to bottom, rgba(2, 6, 23, 0.9), rgba(2, 6, 23, 0.7));
+      border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+    }
+
+    .nav {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0.9rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .logo-img {
+      height: 140px;
+      width: auto;
+      display: block;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 0.2rem;
+      transition: color var(--transition-fast);
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transition: width var(--transition-med);
+    }
+
+    nav a:hover {
+      color: var(--text);
+    }
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      padding: 0.5rem 1.1rem;
+      border-radius: 999px;
+      background: linear-gradient(120deg, var(--primary), var(--accent));
+      border: none;
+      color: #0f172a;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: var(--shadow-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .nav-cta span {
+      font-size: 1.1rem;
+      transform: translateY(1px);
+    }
+
+    /* ===== HERO – full screen image background ===== */
+
+    #home.hero {
+      position: relative;
+      min-height: 100vh; /* full screen */
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero-bg-slide {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transform: scale(1.05);
+      opacity: 0;
+      transition: opacity 700ms ease;
+      will-change: opacity, transform;
+    }
+
+    .hero-bg-slide.active {
+      opacity: 1;
+      animation: heroZoom 18s linear infinite;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top, rgba(15, 23, 42, 0.6), transparent 60%),
+        linear-gradient(to bottom, rgba(15, 23, 42, 0.75), #020617 90%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 620px;
+      padding: 4.5rem 1.5rem 5rem;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      box-shadow: 0 0 22px rgba(15, 23, 42, 0.9);
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 1.1rem;
+    }
+
+    .hero-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--primary);
+      box-shadow: 0 0 14px rgba(249, 115, 22, 0.9);
+    }
+
+    .hero-title {
+      font-size: clamp(2.6rem, 4vw, 3.4rem);
+      font-weight: 700;
+      line-height: 1.08;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-title span {
+      background: linear-gradient(120deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-text {
+      color: var(--muted);
+      max-width: 460px;
+      margin: 0 auto 1.5rem;
+      font-size: 0.98rem;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.4rem;
+    }
+
+    .btn-primary,
+    .btn-ghost {
+      border-radius: 999px;
+      padding: 0.65rem 1.4rem;
+      border: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), color var(--transition-fast), border var(--transition-fast);
+    }
+
+    .btn-primary {
+      background: linear-gradient(120deg, var(--primary), var(--accent));
+      color: #020617;
+      box-shadow: var(--shadow-soft);
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 22px 45px rgba(15, 23, 42, 0.9);
+    }
+
+    .btn-ghost {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: var(--text);
+    }
+    .btn-ghost:hover {
+      background: rgba(15, 23, 42, 1);
+      transform: translateY(-1px);
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .hero-meta strong {
+      display: block;
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+
+    .hero-badge {
+      margin-top: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: var(--muted);
+    }
+
+    .hero-badge span {
+      color: #facc15;
+      font-size: 0.95rem;
+    }
+
+    /* ===== ABOUT ===== */
+
+    #about {
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), #020617);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+      font-size: 0.95rem;
+    }
+
+    .about-highlights {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .about-pill {
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 0.45rem 0.85rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .about-pill span {
+      font-size: 0.85rem;
+      color: var(--primary);
+    }
+
+    .about-list {
+      list-style: none;
+      display: grid;
+      gap: 0.4rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .about-list li::before {
+      content: "✂";
+      display: inline-block;
+      margin-right: 0.4rem;
+      color: var(--primary);
+      font-size: 0.8rem;
+    }
+
+    .about-card {
+      background: var(--card);
+      backdrop-filter: blur(var(--blur));
+      border-radius: var(--radius-xl);
+      padding: 1.1rem 1.2rem;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: var(--shadow-soft);
+      font-size: 0.9rem;
+      display: grid;
+      gap: 0.45rem;
+    }
+
+    .about-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .badge-soft {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.5);
+      color: #e0f2fe;
+    }
+
+    /* ===== SERVICES ===== */
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.4rem;
+    }
+
+    .service-card {
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.85), #020617);
+      border-radius: 1.1rem;
+      padding: 1rem 1.1rem;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      box-shadow: var(--shadow-soft);
+      transition: transform var(--transition-med), box-shadow var(--transition-med), border-color var(--transition-med);
+      position: relative;
+      overflow: hidden;
+      font-size: 0.9rem;
+    }
+
+    .service-card::after {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(circle at top, rgba(249, 115, 22, 0.14), transparent 60%);
+      opacity: 0;
+      transition: opacity var(--transition-med);
+      pointer-events: none;
+    }
+
+    .service-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(249, 115, 22, 0.6);
+      box-shadow: 0 22px 50px rgba(15, 23, 42, 0.95);
+    }
+
+    .service-card:hover::after {
+      opacity: 1;
+    }
+
+    .service-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .service-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .service-price {
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .service-duration {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .service-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* ===== APPOINTMENT ===== */
+
+    .appointment-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 2.2rem;
+      align-items: start;
+    }
+
+    .appointment-form {
+      background: var(--card);
+      border-radius: var(--radius-xl);
+      padding: 1.4rem 1.35rem;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .form-row {
+      display: grid;
+      gap: 0.85rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-row.two-cols {
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+
+    label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border-radius: 0.85rem;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.92);
+      padding: 0.6rem 0.75rem;
+      font-size: 0.9rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(148, 163, 184, 0.7);
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 1px rgba(249, 115, 22, 0.2);
+      background: rgba(15, 23, 42, 1);
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .form-footnote {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.4rem;
+    }
+
+    .appointment-side {
+      font-size: 0.9rem;
+      color: var(--muted);
+      display: grid;
+      gap: 1rem;
+    }
+
+    .slot-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.4rem;
+    }
+
+    .slot {
+      border-radius: 999px;
+      padding: 0.25rem 0.6rem;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      font-size: 0.75rem;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .slot.slot-hot {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: rgba(249, 115, 22, 0.08);
+    }
+
+    .success-message {
+      margin-top: 0.9rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.85rem;
+      font-size: 0.8rem;
+      background: rgba(22, 163, 74, 0.15);
+      border: 1px solid rgba(22, 163, 74, 0.5);
+      color: #bbf7d0;
+      display: none;
+    }
+
+    .success-message.visible {
+      display: block;
+      animation: fadeIn 400ms ease-out;
+    }
+
+    /* ===== CONTACT ===== */
+
+    .contact-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .contact-card {
+      background: var(--card);
+      border-radius: var(--radius-xl);
+      padding: 1.3rem 1.4rem;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      box-shadow: var(--shadow-soft);
+      font-size: 0.9rem;
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .contact-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .contact-row strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .contact-map {
+      border-radius: 1.2rem;
+      overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      min-height: 220px;
+      background:
+        linear-gradient(120deg, rgba(249, 115, 22, 0.2), transparent),
+        linear-gradient(300deg, rgba(56, 189, 248, 0.2), transparent),
+        radial-gradient(circle at 20% 80%, rgba(15, 23, 42, 0.9), #020617);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 1rem 1.1rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      position: relative;
+    }
+
+    .contact-map::after {
+      content: "Map Preview";
+      position: absolute;
+      top: 0.7rem;
+      left: 1rem;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: var(--muted);
+    }
+
+    .pin {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      border: 2px solid var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.95);
+      box-shadow: 0 0 30px rgba(249, 115, 22, 0.9);
+    }
+
+    /* ===== FOOTER ===== */
+
+    footer {
+      border-top: 1px solid rgba(148, 163, 184, 0.25);
+      padding: 1.3rem 1.5rem 2rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+      background: rgba(2, 6, 23, 0.95);
+      margin-top: 3rem;
+    }
+
+.footer-socials {
+  display: flex;
+  justify-content: center;
+  gap: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.social-icon {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s ease;
+}
+
+.social-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.social-icon:hover {
+  transform: translateY(-3px) scale(1.1);
+}
+
+.footer-copy {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+
+
+
+    /* ===== ANIMATIONS ===== */
+
+    @keyframes heroZoom {
+      0% { transform: scale(1.05); }
+      100% { transform: scale(1.15); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== RESPONSIVE ===== */
+
+    @media (max-width: 900px) {
+      section {
+        padding: 4.8rem 0 3.4rem;
+      }
+      .about-grid,
+      .appointment-layout,
+      .contact-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav {
+        flex-wrap: wrap;
+      }
+      nav ul {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+      .about-highlights {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 520px) {
+      .wrapper {
+        padding-inline: 1.1rem;
+      }
+      nav ul {
+        justify-content: center;
+      }
+      .slot-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .about-highlights {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header>
+    <div class="nav">
+      <div class="logo">
+        <!-- 🔁 Update src if your logo path is different -->
+        <img src="images/urban-cuts.png" alt="Urban Cuts - Look sharp" class="logo-img" />
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#appointment">Appointment</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li>
+            <button class="nav-cta" onclick="scrollToSection('appointment')">
+              Book Now
+              <span>➜</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO (full-screen images) -->
+    <section id="home" class="hero">
+      <!-- Background slides: change these URLs to your haircut images -->
+      <div class="hero-bg-slide active" style="background-image: url('images/hero1.jpg');"></div>
+      <div class="hero-bg-slide" style="background-image: url('images/hero2.jpg');"></div>
+      <div class="hero-bg-slide" style="background-image: url('images/hero3.jpg');"></div>
+
+      <div class="hero-overlay"></div>
+
+      <div class="hero-inner">
+        <div class="hero-tag">
+          <div class="hero-dot"></div>
+          <span>Urban Cuts • Look sharp</span>
+        </div>
+
+        <h1 class="hero-title">
+          Clean fades. <span>Confident</span> you.
+        </h1>
+
+        <p class="hero-text">
+          Premium cuts, skin fades, and beard work in a calm, modern space.
+          Book online, walk out sharper.
+        </p>
+
+        <div class="hero-cta-row">
+          <button class="btn-primary" onclick="scrollToSection('appointment')">
+            Book an Appointment
+          </button>
+          <button class="btn-ghost" onclick="scrollToSection('services')">
+            View Services
+          </button>
+        </div>
+
+        <div class="hero-meta">
+          <div>
+            <strong>4.9★</strong>
+            Trusted by 600+ regulars
+          </div>
+          <div>
+            <strong>Open</strong>
+            Tue – Sun • 10:00 – 20:00
+          </div>
+        </div>
+
+        <div class="hero-badge">
+          <span>★</span>
+          By appointment only • No long waits
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="wrapper">
+        <h2 class="section-title">About Urban Cuts</h2>
+        <p class="section-subtitle">
+          We’re not just cutting hair – we’re curating your everyday look. From business clean to street ready,
+          we blend precision barbering with a modern, calm vibe.
+        </p>
+
+        <div class="about-grid">
+          <div class="about-text">
+            <p>
+              Urban Cuts was built on one idea: a barbershop should feel as sharp as the cut you leave with.
+              No noisy TVs, no rush jobs – just a focused session where the chair is yours.
+            </p>
+            <p>
+              Every appointment includes a consultation so your cut fits your hair type, face shape, and routine.
+              We finish each service with clean lines, a hot towel, and the right product for your texture.
+            </p>
+
+            <div class="about-highlights">
+              <div class="about-pill">
+                <span>★</span> 10+ years experience
+              </div>
+              <div class="about-pill">
+                <span>💈</span> Modern + classic cuts
+              </div>
+              <div class="about-pill">
+                <span>🌙</span> Late-night sessions
+              </div>
+            </div>
+
+            <ul class="about-list">
+              <li>Specialized in fades, tapers, and textured crops.</li>
+              <li>Beard shaping with hot towel finish available.</li>
+              <li>Online booking, reminders, and easy reschedule.</li>
+            </ul>
+          </div>
+
+          <div class="about-card">
+            <div class="about-card-header">
+              <div>
+                <strong>Your look, your ritual.</strong>
+                <div style="font-size:0.8rem; color:var(--muted);">
+                  We keep it appointment-only so you never wait.
+                </div>
+              </div>
+              <span class="badge-soft">By appointment only</span>
+            </div>
+
+            <div style="font-size:0.85rem; color:var(--muted);">
+              Not sure what to ask for? Book a “Style Consult + Cut” and we’ll walk through what fits your hair,
+              face shape, and lifestyle. Bring reference photos or let us suggest something fresh.
+            </div>
+
+            <button class="btn-primary" style="margin-top:0.7rem;" onclick="scrollToSection('appointment')">
+              Start my cut journey
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services">
+      <div class="wrapper">
+        <h2 class="section-title">Services</h2>
+        <p class="section-subtitle">
+          All services include a brief consultation, precision cut, and clean finish. Add a beard service or enhancements
+          for a fully dialed-in look.
+        </p>
+
+        <div class="services-grid">
+          <article class="service-card">
+            <div class="service-header">
+              <h3 class="service-title">Signature Fade</h3>
+              <span class="service-price">$45</span>
+            </div>
+            <div class="service-duration">45 min • Skin / mid / low fades</div>
+            <p>Detailed fade, tailored length on top, line-up, and style finish.</p>
+            <div class="service-meta">
+              <span>Most booked</span>
+              <span>Every 2–3 weeks</span>
+            </div>
+          </article>
+
+          <article class="service-card">
+            <div class="service-header">
+              <h3 class="service-title">Clean Classic Cut</h3>
+              <span class="service-price">$40</span>
+            </div>
+            <div class="service-duration">40 min • Business / classic</div>
+            <p>Scissor and clipper work for a sharp, low-maintenance style.</p>
+            <div class="service-meta">
+              <span>Office ready</span>
+              <span>Style consult</span>
+            </div>
+          </article>
+
+          <article class="service-card">
+            <div class="service-header">
+              <h3 class="service-title">Beard Shape + Line-Up</h3>
+              <span class="service-price">$30</span>
+            </div>
+            <div class="service-duration">25 min • Hot towel finish</div>
+            <p>Beard sculpting, cheek + neck lines, and hot towel for a clean finish.</p>
+            <div class="service-meta">
+              <span>Add-on</span>
+              <span>Pairs with any cut</span>
+            </div>
+          </article>
+
+          <article class="service-card">
+            <div class="service-header">
+              <h3 class="service-title">Student Cut</h3>
+              <span class="service-price">$35</span>
+            </div>
+            <div class="service-duration">40 min • ID required</div>
+            <p>All the detail of our signature cuts, with a student-friendly rate.</p>
+            <div class="service-meta">
+              <span>Weekdays</span>
+              <span>Limited spots</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- APPOINTMENT -->
+    <section id="appointment">
+      <div class="wrapper">
+        <h2 class="section-title">Book an Appointment</h2>
+        <p class="section-subtitle">
+          Choose your time, service, and barber. We’ll send you a confirmation email and a reminder before your visit.
+        </p>
+
+        <div class="appointment-layout">
+          <form class="appointment-form" id="appointmentForm">
+            <div class="form-row two-cols">
+              <div>
+                <label for="name">Full name</label>
+                <input type="text" id="name" name="name" placeholder="Jordan Lane" required />
+              </div>
+              <div>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" required />
+              </div>
+            </div>
+
+            <div class="form-row two-cols">
+              <div>
+                <label for="date">Date</label>
+                <input type="date" id="date" name="date" required />
+              </div>
+              <div>
+                <label for="time">Time</label>
+                <input type="time" id="time" name="time" required />
+              </div>
+            </div>
+
+            <div class="form-row two-cols">
+              <div>
+                <label for="serviceSelect">Service</label>
+                <select id="serviceSelect" name="service" required>
+                  <option value="">Select a service</option>
+                  <option value="Signature Fade">Signature Fade</option>
+                  <option value="Clean Classic Cut">Clean Classic Cut</option>
+                  <option value="Beard Shape + Line-Up">Beard Shape + Line-Up</option>
+                  <option value="Student Cut">Student Cut</option>
+                </select>
+              </div>
+              <div>
+                <label for="barber">Barber</label>
+                <select id="barber" name="barber" required>
+                  <option value="">Any available barber</option>
+                  <option value="Alex">Alex</option>
+                  <option value="Mia">Mia</option>
+                  <option value="Jordan">Jordan</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div>
+                <label for="notes">Notes (optional)</label>
+                <textarea id="notes" name="notes" placeholder="Tell us about your hair or share a reference style..."></textarea>
+                <p class="form-footnote">
+                  Need to change your time? Just reply to the confirmation email – we’ll move it for you.
+                </p>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">
+              Confirm Appointment
+            </button>
+
+            <div id="successMessage" class="success-message">
+              Your appointment is requested! Check your email shortly for a confirmation with all the details.
+            </div>
+          </form>
+
+          <aside class="appointment-side">
+            <div>
+              <strong>Popular times this week</strong>
+              <div class="slot-grid" style="margin-top:0.45rem;">
+                <div class="slot">11:00</div>
+                <div class="slot slot-hot">16:30</div>
+                <div class="slot">18:00</div>
+                <div class="slot">11:30</div>
+                <div class="slot">15:00</div>
+                <div class="slot">19:00</div>
+              </div>
+            </div>
+            <div>
+              <strong style="display:block; margin-bottom:0.25rem;">Cancellation policy</strong>
+              <span>
+                Free reschedule up to 4 hours before your appointment. Late cancellations or no-shows may require a deposit
+                for future bookings.
+              </span>
+            </div>
+            <div>
+              <strong style="display:block; margin-bottom:0.25rem;">First time here?</strong>
+              <span>
+                Book “Signature Fade” or “Classic Cut” and choose any barber. We’ll guide you through everything.
+              </span>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="wrapper">
+        <h2 class="section-title">Contact & Location</h2>
+        <p class="section-subtitle">
+          Have questions before you book? Reach out and we’ll get back to you as soon as we’re off the clippers.
+        </p>
+
+        <div class="contact-layout">
+          <div class="contact-card">
+            <div class="contact-row">
+              <span><strong>Address</strong></span>
+              <span>215 Fade Street, Suite 3B,<br />Downtown District</span>
+            </div>
+            <div class="contact-row">
+              <span><strong>Phone</strong></span>
+              <span>(555) 012-3456</span>
+            </div>
+            <div class="contact-row">
+              <span><strong>Email</strong></span>
+              <span>hello@urbancuts.com</span>
+            </div>
+            <div class="contact-row">
+              <span><strong>Hours</strong></span>
+              <span>Tue – Sun • 10:00 – 20:00<br />Closed Mondays</span>
+            </div>
+          </div>
+
+          <div class="contact-map">
+            <div>
+              <strong>We’re tucked just off the main street.</strong>
+              <div style="margin-top:0.3rem;">
+                Street parking and a small lot behind the building. Look for the minimal dark sign with the Urban Cuts logo.
+              </div>
+            </div>
+            <div class="pin">📍</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+<footer>
+  <div class="footer-socials">
+
+    <!-- Instagram -->
+    <a href="https://instagram.com" target="_blank" class="social-icon social-instagram">
+      <svg viewBox="0 0 24 24">
+        <defs>
+          <linearGradient id="instaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fdf497"/>
+            <stop offset="25%" stop-color="#fd5949"/>
+            <stop offset="50%" stop-color="#d6249f"/>
+            <stop offset="100%" stop-color="#285AEB"/>
+          </linearGradient>
+        </defs>
+        <rect x="2" y="2" width="20" height="20" rx="5" stroke="url(#instaGradient)" stroke-width="2" fill="none"/>
+        <path d="M16 11.37A4 4 0 1 1 12.63 8" stroke="url(#instaGradient)" stroke-width="2" fill="none"/>
+        <circle cx="17.5" cy="6.5" r="1.5" fill="url(#instaGradient)"/>
+      </svg>
+    </a>
+
+    <!-- TikTok -->
+    <a href="https://tiktok.com" target="_blank" class="social-icon">
+      <svg viewBox="0 0 48 48">
+        <path fill="#69C9D0" d="M30,13.5c2.1,2 4.8,3.3 7.8,3.6v6.6c-2.8,0-5.5-0.8-7.8-2.2v9.6c0,6.8-5.5,12.3-12.3,12.3S5.4,38,5.4,31.2 
+        S10.9,18.9,17.7,18.9c1.7,0,3.3,0.4,4.7,1.1v7c-1.1-0.8-2.5-1.3-4-1.3c-3.5,0-6.3,2.8-6.3,6.3s2.8,6.3,6.3,6.3s6.3-2.8,6.3-6.3V5h5.3
+        c0,2.9,1.2,5.5,3.3,7.3L30,13.5z"/>
+      </svg>
+    </a>
+
+    <!-- Facebook -->
+    <a href="https://facebook.com" target="_blank" class="social-icon">
+      <svg viewBox="0 0 24 24">
+        <path fill="#1877F2" d="M22 12a10 10 0 1 0-11.5 9.9v-7h-2v-3h2V9.5c0-2 1.2-3.1 3-3.1c.9 0 1.8.1 1.8.1v2h-1c-1 0-1.3.6-1.3 1.2V12h2.5
+        l-.4 3h-2v7A10 10 0 0 0 22 12"/>
+      </svg>
+    </a>
+
+    <!-- YouTube -->
+    <a href="https://youtube.com" target="_blank" class="social-icon">
+      <svg viewBox="0 0 24 24">
+        <path fill="#FF0000" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.2 3.5 12 3.5 12 3.5s-7.2 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 
+        3 3 0 0 0 2.1 2.1c2.2.6 9.4.6 9.4.6s7.2 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.75 15.02V8.98L15.5 12l-5.75 3.02Z"/>
+      </svg>
+    </a>
+
+  </div>
+
+  <div class="footer-copy">
+    © <span id="year"></span> Urban Cuts. All rights reserved.
+  </div>
+</footer>
+
+
+
+
+  <script>
+    // Smooth scroll helper
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }
+
+    // Full-screen hero background slider
+    const slides = document.querySelectorAll(".hero-bg-slide");
+    let currentSlide = 0;
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle("active", i === index);
+      });
+      currentSlide = index;
+    }
+
+    function nextSlide() {
+      const next = (currentSlide + 1) % slides.length;
+      showSlide(next);
+    }
+
+    if (slides.length > 1) {
+      setInterval(nextSlide, 6000); // change every 6 seconds
+    }
+
+    // Appointment form logic
+    const appointmentForm = document.getElementById("appointmentForm");
+    const successMessage = document.getElementById("successMessage");
+    const dateInput = document.getElementById("date");
+
+    (function setMinDate() {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, "0");
+      const dd = String(today.getDate()).padStart(2, "0");
+      const min = `${yyyy}-${mm}-${dd}`;
+      dateInput.min = min;
+    })();
+
+    appointmentForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      if (!appointmentForm.checkValidity()) {
+        appointmentForm.reportValidity();
+        return;
+      }
+
+      successMessage.classList.add("visible");
+
+      setTimeout(() => {
+        appointmentForm.reset();
+      }, 800);
+    });
+
+    // Footer year
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
